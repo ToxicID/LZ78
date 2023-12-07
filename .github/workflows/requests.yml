@@ -2,11 +2,6 @@ name: build
 
 on:
   push:
-  pull_request:
-    branches: [ main ]
-    paths:
-    - '**.cs'
-    - '**.csproj'
     tags:
      - 'v*'
 env:
@@ -14,8 +9,9 @@ env:
 
 jobs:
   build:
+    name: build
     runs-on: ubuntu-latest
-   
+    
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET Core
