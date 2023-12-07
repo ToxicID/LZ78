@@ -13,22 +13,25 @@ env:
 
 jobs:
   build:
-
-    name: build-${{matrix.os}}
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest, macOS-latest]
-
+    runs-on: ubuntu-latest
+   
     steps:
     - uses: actions/checkout@v3
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+        dotnet-version: 6.0.x
 
-    - name: Install dependencies
+    - name: Restore dependencies
       run: dotnet restore
       
     - name: Build
       run: dotnet build --configuration Release --no-restore
+
+      
+    - name: Publish
+      run: dotnet publish LZ78/LZ78.csproj -c Release
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3
+     
+
