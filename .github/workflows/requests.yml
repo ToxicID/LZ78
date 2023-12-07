@@ -42,5 +42,5 @@ jobs:
     - name: upload windows artifact
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ GIT_TOKEN }}
+        GITHUB_TOKEN: ${{ github.token }}
 
