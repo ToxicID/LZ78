@@ -30,8 +30,12 @@ jobs:
 
       
     - name: Publish
-      run: dotnet publish ConsoleApp4/ConsoleApp4.csproj -c Release
+      run: dotnet publish ConsoleApp4/ConsoleApp4.csproj -c Release -o program
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
+      with:
+        name: program
+        path: ConsoleApp4/bin/Debug/net6.0/**
+        if-no-files-found: error
      
 
