@@ -30,7 +30,7 @@ jobs:
 
       
     - name: Publish
-      run: dotnet publish LZ78/LZ78.csproj -c Release
+      run: dotnet publish ConsoleApp4/ConsoleApp4.csproj -c Release
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3
      
