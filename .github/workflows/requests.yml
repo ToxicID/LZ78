@@ -8,23 +8,21 @@ on:
     paths:
       - ".github/workflows/Tests.yml"
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: '6.0.x' # SDK Version to use.
-          source-url: https://nuget.pkg.github.com/<owner>/index.json
+  build:
+   name: Create Release
+   runs-on: ubuntu-latest
+   steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
         env:
-          NUGET_AUTH_TOKEN: ${{secrets.GIT_TOKEN}}
-      - run: dotnet build --configuration Release ConsoleApp4
-      - name: Create the package
-        run: dotnet pack --configuration Release ConsoleApp4
-      - name: Publish the package to GPR
-        run: dotnet nuget push ConsoleApp4/bin/Debug/net6.0/*.nupkg
-      - name: Publish the package to Exe
-        run: dotnet nuget push ConsoleApp4/bin/Debug/net6.0/*.exe
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
