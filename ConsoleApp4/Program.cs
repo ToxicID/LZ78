@@ -113,7 +113,7 @@ namespace ConsoleApp7
                     Console.Write($"({Data[i].Item1},\'{Data[i].Item2}\')");
                 count++;
             }
-
+Console.ReadKey();
         }
     }
 }
