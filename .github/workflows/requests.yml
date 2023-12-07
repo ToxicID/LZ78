@@ -53,4 +53,7 @@ jobs:
         name: program
         path: ConsoleApp4/bin/Debug/net6.0/**
         if-no-files-found: error
-
+    - name: upload windows program
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ github.token }}
