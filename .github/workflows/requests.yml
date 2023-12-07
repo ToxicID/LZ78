@@ -51,6 +51,6 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: program
-        path: ConsoleApp4/bin/Debug/net6.0/**
+        path: ConsoleApp4/bin/Debug/net6.0/ConsoleApp4.exe
         if-no-files-found: error
   
