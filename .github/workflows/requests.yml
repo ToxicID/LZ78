@@ -1,46 +1,40 @@
-name: building
+name: build
+
 on:
   push:
-    tags:
-      - '*'
+  pull_request:
+    branches: [ main ]
+    paths:
+    - '**.cs'
+    - '**.csproj'
+
+env:
+  DOTNET_VERSION: '6.0.401' # The .NET SDK version to use
+
 jobs:
   build:
-   runs-on: ubuntu-latest
-   steps:
-   - name: build
-     run: make build
-   - name: version
-     run: echo "::set-output name=version::$(./bin/azblogfilter --version)"
-     id: version
-   - name: release
-     uses: actions/create-release@v1
-     id: create_release
-     with:
-       draft: false
-       prerelease: false
-       release_name: ${{ steps.version.outputs.version }}
-       tag_name: ${{ github.ref }}
-      
-     env:
-        GITHUB_TOKEN: ${{ github.token }}
-   - name: build artifacts
-     run: make build-linux && make build-windows
-   - name: upload linux artifact
-     uses: actions/upload-release-asset@v1
-     env:
-       GITHUB_TOKEN: ${{ github.token }}
-     with:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
-      asset_path: ./bin/azblogfilter.linux-amd64.tar.gz
-      asset_name: azblogfilter.linux-amd64.tar.gz
-      asset_content_type: application/gzip
+    runs-on: ubuntu-latest
    
-   - name: upload windows artifact
-     uses: actions/upload-release-asset@v1
-     env:
-      GITHUB_TOKEN: ${{ github.token }}
-     with:
-      upload_url: ${{ steps.create_release.outputs.upload_url }}
-      asset_path: ./bin/azblogfilter.windows-amd64.zip
-      asset_name: azblogfilter.windows-amd64.zip
-      asset_content_type: application/zip
+    steps:
+    - uses: actions/checkout@v3
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build
+      run: dotnet build --configuration Release --no-restore
+
+      
+    - name: Publish
+      run: dotnet publish ConsoleApp4/ConsoleApp4.csproj -c Release -o program
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: program
+        path: ConsoleApp4/bin/Debug/net6.0/**
+        if-no-files-found: error
+
