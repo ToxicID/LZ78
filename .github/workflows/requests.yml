@@ -27,6 +27,9 @@ jobs:
 
       - name: Archive artifact folder
         run: rar a program.rar ./net6.0
+        
+      - name: Change working directory back
+        run: cd -
 
       - name: Create Release
         id: create_release
