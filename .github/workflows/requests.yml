@@ -25,9 +25,12 @@ jobs:
       - name: Install rar
         run: sudo apt-get install rar
 
+      - name: Change working directory
+        run: cd ./ConsoleApp4/bin/Debug
+
       - name: Archive artifact folder
-        run: rar a program.rar ./net6.0
-        
+        run: rar a your-artifact.rar ./net6.0
+
       - name: Change working directory back
         run: cd -
 
