@@ -40,6 +40,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./publish/ConsoleApp4.exe
+          asset_path: ./ConsoleApp4/bin/Debug/net6.0/ConsoleApp4.exe
           asset_name: ConsoleApp4.exe
           asset_content_type: application/octet-stream
