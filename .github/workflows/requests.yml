@@ -31,9 +31,6 @@ jobs:
       - name: Archive artifact folder
         run: rar a program.rar ${{ github.workspace }}/ConsoleApp4/bin/Debug/net6.0
 
-      - name: Change working directory back
-        run: cd -
-
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
