@@ -26,7 +26,7 @@ jobs:
         run: sudo apt-get install rar
 
       - name: Archive artifact folder
-        run: rar a program.rar ./ConsoleApp4/bin/Debug/net6.0
+        run: rar a program.rar ./net6.0
 
       - name: Create Release
         id: create_release
