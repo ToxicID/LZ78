@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest # Определяет тип виртуальной машины, на которой будет выполняться рабочий процесс
 
     steps:
-      - name: Checkout code # Извлекает код из вашего репозитория
+      - name: Checkout code # Извлекает код из репозитория
         uses: actions/checkout@v2
 
       - name: Setup .NET # Устанавливает .NET SDK на виртуальной машине
@@ -17,10 +17,10 @@ jobs:
         with:
           dotnet-version: '6.0.x' # Версия .NET SDK
 
-      - name: Build project # Собирает ваш проект
+      - name: Build project # Собирает проект
         run: dotnet build --configuration Debug
 
-      - name: Publish project # Публикует ваш проект
+      - name: Publish project # Публикует проект
         run: dotnet publish --configuration Debug --output ./ConsoleApp4/bin/Debug/net6.0
 
       - name: Install rar # Устанавливает утилиту rar для создания архивов
