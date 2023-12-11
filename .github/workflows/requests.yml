@@ -20,7 +20,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Publish project
-        run: dotnet publish --configuration Release --output ./publish
+        run: dotnet publish --configuration Release --output ./ConsoleApp4/bin/Debug/net6.0
+
+      - name: Install rar
+        run: sudo apt-get install rar
+
+      - name: Archive artifact folder
+        run: rar a your-artifact.rar ./ConsoleApp4/bin/Debug/net6.0
 
       - name: Create Release
         id: create_release
@@ -40,6 +46,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./ConsoleApp4/bin/Debug/net6.0/ConsoleApp4.exe
-          asset_name: ConsoleApp4.exe
-          asset_content_type: application/octet-stream
+          asset_path: ./ConsoleApp4/bin/Debug/net6.0.rar
+          asset_name: program.rar
+          asset_content_type: application/x-rar-compressed
