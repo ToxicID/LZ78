@@ -29,7 +29,7 @@ jobs:
         run: cd ./ConsoleApp4/bin/Debug
 
       - name: Archive artifact folder
-        run: rar a program.rar ./net6.0
+        run: rar a program.rar ${{ github.workspace }}/ConsoleApp4/bin/Debug/net6.0
 
       - name: Change working directory back
         run: cd -
