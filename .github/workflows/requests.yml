@@ -25,10 +25,10 @@ jobs:
       - name: Install rar
         run: sudo apt-get install rar
 
-      - name: Change working directory
-        run: cd ./ConsoleApp4/bin/Debug
+      
 
       - name: Archive artifact folder
+        working-directory: ./ConsoleApp4/bin/Debug
         run: rar a program.rar ./net6.0
 
       - name: Create Release
@@ -49,6 +49,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./program.rar
+          asset_path: ./ConsoleApp4/bin/Debug/program.rar
           asset_name: program.rar
           asset_content_type: application/x-rar-compressed
