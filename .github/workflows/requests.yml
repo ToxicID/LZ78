@@ -1,56 +1,45 @@
-name: build
-
+name: Create Release and Upload Artifact
 on:
   push:
     tags:
-     - 'v*'
-env:
-  DOTNET_VERSION: '6.0.401' # The .NET SDK version to use
+      - '*'
 
 jobs:
   build:
-    name: build
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v3
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-        
-    - name: Checkout code
-      uses: actions/checkout@v3
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-      with:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+
+      - name: Build project
+        run: dotnet build --configuration Release
+
+      - name: Publish project
+        run: dotnet publish --configuration Release --output ./publish
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+        with:
           tag_name: ${{ github.ref }}
           release_name: Release ${{ github.ref }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
           draft: false
           prerelease: false
-    
-    
 
-    - name: Restore dependencies
-      run: dotnet restore
-      
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-
-      
-    - name: Publish
-      run: dotnet publish ConsoleApp4/ConsoleApp4.csproj -c Release -o program
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3
-      with:
-        name: program
-        path: ConsoleApp4/bin/Debug/net6.0/**
-        if-no-files-found: error
-  
+      - name: Upload Release Asset
+        id: upload-release-asset 
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIT_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./publish/ConsoleApp4.exe
+          asset_name: ConsoleApp4.exe
+          asset_content_type: application/octet-stream
