@@ -28,7 +28,7 @@ jobs:
 
       - name: Archive artifact folder # Создает архив с содержимым папки net6.0
         working-directory: ./ConsoleApp4/bin/Debug
-        run: rar a program.zip ./net6.0
+        run: zip a program.zip ./net6.0
 
       - name: Create Release # Создает новый релиз на GitHub
         id: create_release
@@ -50,4 +50,4 @@ jobs:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # URL для загрузки артефакта
           asset_path: ./ConsoleApp4/bin/Debug/program.zip # Путь до файла артефакта
           asset_name: program.zip # Имя файла артефакта
-          asset_content_type: application/x-rar-compressed # MIME-тип файла артефакта
+          asset_content_type: application/x-zip-compressed # MIME-тип файла артефакта
